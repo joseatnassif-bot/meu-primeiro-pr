@@ -4,7 +4,7 @@ Este é um repositório de prática para aprender o fluxo de Pull Requests no Gi
 
 ## Sobre
 
-Este repositorio foi criado para vocë praticar como abrir, revisar e mergear um Pull Request.
+Este repositório foi criado para você praticar como abrir, revisar e mergear um Pull Request.
 
 ## Como contribuir
 
