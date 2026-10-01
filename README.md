@@ -12,3 +12,7 @@ Este repositório foi criado para você praticar como abrir, revisar e mergear u
 2. Faça sua alteração.
 3. Abra um Pull Request descrevendo a mudança.
 4. Revise e faça o merge.
+
+## Projetos
+
+- [`santino-prime-meats/`](santino-prime-meats/index.html) — site da boutique de carnes Santino Prime Meats (Londrina, PR). Página única em HTML/CSS/JS puro: abra o `index.html` no navegador ou publique a pasta no GitHub Pages.
