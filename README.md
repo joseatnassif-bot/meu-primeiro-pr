@@ -15,4 +15,4 @@ Este repositório foi criado para você praticar como abrir, revisar e mergear u
 
 ## Projetos
 
-- [`santino-prime-meats/`](santino-prime-meats/index.html) — site da boutique de carnes Santino Prime Meats (Londrina, PR). Página única em HTML/CSS/JS puro: abra o `index.html` no navegador ou publique a pasta no GitHub Pages.
+- [`santino-prime-meats/`](santino-prime-meats/index.html) — site da boutique de carnes Santino Prime Meats (Londrina, PR). Página única em HTML/CSS/JS puro: abra o `index.html` no navegador ou publique a pasta no GitHub Pages. As fotos reais entram em [`santino-prime-meats/fotos/`](santino-prime-meats/fotos/README.md).
