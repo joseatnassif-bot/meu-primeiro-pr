@@ -1,16 +1,21 @@
 # Fotos do site
 
-Coloque aqui as fotos reais da Santino Prime Meats com estes nomes exatos. Enquanto um arquivo não existir, o site mostra um fundo neutro com o monograma "S" no lugar.
+Fotos reais da Santino Prime Meats usadas no `index.html`. Se um arquivo sumir, o site mostra um fundo neutro com o monograma "S" no lugar (menos nos banners do topo).
 
-| Arquivo        | Onde aparece                         | Formato            | Tamanho sugerido |
-| -------------- | ------------------------------------ | ------------------ | ---------------- |
-| `hero.jpg`     | Topo da página, ao lado do título    | Vertical, 4:5      | 1200 × 1500 px   |
-| `boutique.jpg` | Seção "Mais que um açougue"          | Vertical, 4:5      | 1200 × 1500 px   |
-| `cortes.jpg`   | Faixa larga acima da lista de cortes | Horizontal, 21:8   | 2100 × 800 px    |
+| Arquivo                               | Onde aparece                                              |
+| ------------------------------------- | --------------------------------------------------------- |
+| `santino-banner-loja.webp`            | Topo, banner 1 (interior da loja)                         |
+| `santino-banner-area-externa.webp`    | Topo, banner 2 no computador (área externa, horizontal)   |
+| `santino-area-externa-vertical.webp`  | Topo, banner 2 no celular (mesma cena, vertical)          |
+| `santino-fachada.webp`                | Seção "Mais que um açougue": foto principal (a loja)      |
+| `santino-area-externa-coqueiros.webp` | Seção "Mais que um açougue": foto menor (a experiência)   |
+| `santino-cortes.webp`                 | Seção "Feito para a brasa", acima da lista de cortes      |
+
+Para trocar uma foto, substitua o arquivo mantendo o nome. Se o formato mudar muito (por exemplo, uma vertical no lugar de uma horizontal), ajuste também os atributos `width`/`height` e o texto `alt` no `index.html`.
 
 Dicas:
 
-- Fotos com fundo escuro e luz quente combinam com o visual do site.
-- No celular, as fotos são recortadas para 4:3. Deixe o assunto principal no centro.
-- Exporte em JPG com qualidade em torno de 80% para a página carregar rápido (idealmente abaixo de 300 KB cada).
-- Se trocar o conteúdo da foto, atualize também o texto `alt` correspondente no `index.html`.
+- Fotos com luz quente e fundo escuro combinam com o visual do site.
+- A fachada e a área externa são recortadas pela parte de baixo da foto: deixe a placa e a cobertura na metade de baixo.
+- Os banners do topo ficam atrás do texto, do lado esquerdo; o assunto principal funciona melhor no centro ou à direita.
+- Mantenha cada arquivo abaixo de ~300 KB (WebP com qualidade ~80) para a página carregar rápido.
