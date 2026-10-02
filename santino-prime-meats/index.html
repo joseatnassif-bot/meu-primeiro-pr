@@ -253,23 +253,141 @@
     .pillar strong { display: block; font-family: var(--serif); font-size: 22px; font-weight: 500; line-height: 1.2; margin-bottom: 4px; }
     .pillar span { font-size: 14.5px; color: var(--muted); }
 
-    /* Cortes: lista no estilo carta de açougue */
+    /* ---------- Nossos cortes ---------- */
     .products { background: var(--bg-2); }
-    .photo-cuts { aspect-ratio: 2 / 1; margin-bottom: 64px; }
-    .photo-cuts img { object-position: 50% 78%; }
-    .menu { border-bottom: 1px solid var(--line); }
-    .menu-row {
-      display: grid; grid-template-columns: 1fr 1.25fr 1.1fr; gap: 40px; align-items: baseline;
-      padding: 36px 0; border-top: 1px solid var(--line);
+
+    /* Destaque Wagyu: foto, texto, foto. As fotos têm um parallax leve ligado à rolagem. */
+    .wagyu {
+      display: grid; grid-template-columns: 1fr 1.05fr 1fr; gap: 40px; align-items: center;
+      padding: 32px; border-radius: var(--radius); margin-bottom: 72px;
+      background:
+        radial-gradient(90% 120% at 50% 0%, rgba(122, 31, 36, .32), transparent 65%),
+        var(--surface);
     }
-    .menu-row h3 { font-family: var(--serif); font-size: 29px; font-weight: 500; line-height: 1.1; margin: 0; }
-    .menu-row p { color: var(--muted); margin: 0; max-width: 30em; }
-    .cuts {
-      list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px;
-      font-family: var(--serif); font-size: 20px; font-style: italic; color: var(--gold-soft); line-height: 1.4;
+    .wagyu-photo {
+      position: relative; display: block; width: 100%; aspect-ratio: 4 / 5; overflow: hidden;
+      padding: 0; border: 0; border-radius: 10px; background: #1a1411; cursor: zoom-in;
     }
-    .products-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; margin-top: 48px; }
-    .products-cta p { margin: 0; color: var(--muted); font-size: 17px; }
+    .wagyu-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; transform: scale(1.1); }
+    .wagyu-copy { text-align: center; }
+    .wagyu-copy h3 { font-family: var(--serif); font-weight: 500; font-size: clamp(30px, 3.2vw, 40px); line-height: 1.1; margin: 0 0 12px; text-wrap: balance; }
+    .wagyu-copy > p { color: var(--muted); margin: 0 auto 24px; max-width: 24em; }
+    .wagyu-list { margin: 0 0 28px; display: grid; gap: 14px; }
+    .wagyu-list div { padding-top: 14px; border-top: 1px solid var(--line); }
+    .wagyu-list dt { font-family: var(--serif); font-size: 22px; line-height: 1.2; }
+    .wagyu-list dd { margin: 2px 0 0; font-size: 13.5px; font-weight: 600; color: var(--gold-soft); }
+
+    @keyframes drift { from { transform: translateY(-4%) scale(1.1); } to { transform: translateY(4%) scale(1.1); } }
+    @keyframes drift-alt { from { transform: translateY(4%) scale(1.1); } to { transform: translateY(-4%) scale(1.1); } }
+    @supports (animation-timeline: view()) {
+      @media (prefers-reduced-motion: no-preference) {
+        .wagyu-photo img { animation: drift linear both; animation-timeline: view(); animation-range: cover; }
+        .wagyu-photo.alt img { animation-name: drift-alt; }
+      }
+    }
+
+    /* Faixa de marcas: rola em velocidade constante (linear), pausa no hover, no foco e no botão */
+    .brands { position: relative; display: flex; align-items: center; gap: 8px; margin-bottom: 56px; }
+    .brands-viewport {
+      flex: 1; min-width: 0; overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    }
+    .brands-track { display: flex; width: max-content; animation: marquee 48s linear infinite; }
+    .brands-group { display: flex; gap: 64px; padding-right: 64px; }
+    .brands-group span {
+      font-family: var(--serif); font-size: clamp(24px, 2.6vw, 32px); line-height: 1.6; white-space: nowrap;
+      color: rgba(226, 196, 138, .78);
+    }
+    .brands-group span:nth-child(even) { font-style: italic; color: rgba(243, 236, 227, .62); }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    .brands:hover .brands-track, .brands.paused .brands-track { animation-play-state: paused; }
+    .brands-pause {
+      flex: none; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0;
+      border-radius: 50%; background: none; color: var(--muted); cursor: pointer; transition: color 200ms ease;
+    }
+    .brands-pause svg { width: 14px; height: 14px; }
+    .brands-pause .i-play { display: none; }
+    .brands-pause[aria-pressed="true"] .i-play { display: block; }
+    .brands-pause[aria-pressed="true"] .i-pause { display: none; }
+
+    /* Filtros */
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+    .filter {
+      display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px;
+      border: 1px solid var(--line); border-radius: 999px; background: none; color: var(--text);
+      font: 500 15px/1 var(--sans); cursor: pointer; white-space: nowrap;
+      transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, transform 160ms var(--ease-out);
+    }
+    .filter .count { font-size: 12px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; transition: color 200ms ease; }
+    .filter[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: #1a130c; }
+    .filter[aria-pressed="true"] .count { color: rgba(26, 19, 12, .7); }
+    .filter:active { transform: scale(0.97); }
+
+    /* Cards */
+    .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .card {
+      position: relative; display: flex; flex-direction: column; overflow: hidden;
+      background: var(--surface); border-radius: var(--radius);
+      transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
+    }
+    .card[hidden] { display: none; }
+    .card-media {
+      display: block; position: relative; width: 100%; aspect-ratio: 4 / 5; overflow: hidden;
+      padding: 0; border: 0; background: #1a1411; cursor: zoom-in;
+    }
+    .card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 600ms var(--ease-out); }
+    .card-media:focus-visible { outline-offset: -3px; }
+    .card-body { flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 18px 20px 20px; }
+    .tags { list-style: none; margin: 0 0 4px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-size: 12px; font-weight: 600; line-height: 1.3; color: var(--gold-soft);
+      border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; white-space: nowrap;
+    }
+    .card h3 { font-family: var(--serif); font-weight: 500; font-size: 24px; line-height: 1.15; margin: 0; text-wrap: balance; }
+    .card-brand { margin: 0 0 12px; font-size: 14px; color: var(--muted); }
+    .card-wa {
+      margin-top: auto; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px;
+      font-size: 14px; font-weight: 600; color: var(--text); text-align: center; line-height: 1.15;
+      transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, transform 160ms var(--ease-out);
+    }
+    .card-wa svg { width: 16px; height: 16px; flex: none; }
+    .card-wa:active { transform: scale(0.97); }
+
+    /* Chamada final, com a foto da loja ao fundo */
+    .cuts-cta {
+      position: relative; isolation: isolate; overflow: hidden; margin-top: 72px; border-radius: var(--radius);
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding: 48px 40px;
+    }
+    .cuts-cta img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 50% 70%; }
+    .cuts-cta::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(15,12,11,.94) 0%, rgba(15,12,11,.78) 55%, rgba(15,12,11,.55) 100%); }
+    .cuts-cta-copy p { margin: 0; color: var(--muted); }
+    .cuts-cta-copy .cuts-cta-title { font-family: var(--serif); font-size: clamp(26px, 3vw, 34px); line-height: 1.15; color: var(--text); margin-bottom: 4px; }
+
+    /* Lightbox: modal centralizado, entra com escala sutil; fecha mais rápido do que abre */
+    .lightbox {
+      position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0;
+      padding: 24px; border: 0; background: rgba(8, 6, 5, .92); color: var(--text);
+      place-items: center; opacity: 0;
+      transition: opacity 150ms ease-out, display 150ms allow-discrete, overlay 150ms allow-discrete;
+    }
+    .lightbox[open] { display: grid; opacity: 1; transition-duration: 220ms; transition-timing-function: var(--ease-out); }
+    .lightbox::backdrop { background: transparent; }
+    @starting-style { .lightbox[open] { opacity: 0; } }
+    .lightbox figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 14px; transform: scale(.96); transition: transform 150ms ease-out; }
+    .lightbox[open] figure { transform: none; transition: transform 260ms var(--ease-out); }
+    @starting-style { .lightbox[open] figure { transform: scale(.96); } }
+    .lightbox img { display: block; max-width: min(92vw, 1100px); max-height: calc(100dvh - 140px); width: auto; height: auto; border-radius: 10px; object-fit: contain; }
+    .lightbox figcaption { font-size: 15px; color: var(--muted); text-align: center; max-width: 40em; }
+    .lb-close {
+      position: absolute; top: 16px; right: 16px; width: 48px; height: 48px; display: grid; place-items: center;
+      padding: 0; border: 1px solid rgba(243,236,227,.25); border-radius: 50%; background: rgba(15,12,11,.6); color: var(--text); cursor: pointer;
+      transition: border-color 200ms ease, transform 160ms var(--ease-out);
+    }
+    .lb-close svg { width: 18px; height: 18px; }
+    .lb-close:active { transform: scale(0.95); }
+    html:has(.lightbox[open]) { overflow: hidden; }
 
     /* Encomendas */
     .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; counter-reset: s; list-style: none; padding: 0; margin: 0; }
@@ -351,6 +469,12 @@
       .info-row a:hover { color: var(--gold-soft); }
       .foot-links a:hover { background-color: rgba(201,163,92,.1); border-color: var(--gold); }
       .fab.show:hover { transform: scale(1.05); }
+      .card:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -22px rgba(0,0,0,.85); }
+      .card:hover .card-media img { transform: scale(1.05); }
+      .card-wa:hover { background-color: var(--gold); border-color: var(--gold); color: #1a130c; }
+      .filter:not([aria-pressed="true"]):hover { border-color: var(--gold); }
+      .brands-pause:hover { color: var(--text); }
+      .lb-close:hover { border-color: var(--gold); }
     }
 
     /* ---------- Resposta ao toque/clique (depois do hover para prevalecer) ---------- */
@@ -375,8 +499,11 @@
       transition-delay: var(--d, 0ms);
     }
     .js .photo.reveal.in::after, .js .photo.reveal.in::before, .js .photo.reveal.in img { clip-path: inset(0 0 0 0 round var(--radius)); transform: none; }
-    .menu-row.reveal:nth-child(2), .step.reveal:nth-child(2), .pillar.reveal:nth-child(2) { --d: 80ms; }
-    .menu-row.reveal:nth-child(3), .step.reveal:nth-child(3), .pillar.reveal:nth-child(3) { --d: 160ms; }
+    .step.reveal:nth-child(2), .pillar.reveal:nth-child(2) { --d: 80ms; }
+    .step.reveal:nth-child(3), .pillar.reveal:nth-child(3) { --d: 160ms; }
+    /* Cards dos cortes entram em cascata, linha a linha */
+    .grid .card.reveal:nth-child(3n+2) { --d: 80ms; }
+    .grid .card.reveal:nth-child(3n) { --d: 160ms; }
     .pillar.reveal:nth-child(4) { --d: 240ms; }
 
     /* Movimento reduzido: mantém só o fade, sem deslocamento, desfoque ou recorte */
@@ -391,6 +518,12 @@
       .js .photo.reveal::after, .js .photo.reveal::before, .js .photo.reveal img { clip-path: none; transform: none; transition: none; }
       .btn:hover { transform: none; }
       .fab { transform: none; }
+      .card:hover, .card:hover .card-media img { transform: none; }
+      .brands-track { width: auto; animation: none; }
+      .brands-group + .brands-group, .brands-pause { display: none; }
+      .brands-group { flex-wrap: wrap; justify-content: center; gap: 4px 40px; padding-right: 0; }
+      .brands-viewport { -webkit-mask-image: none; mask-image: none; }
+      .lightbox figure, .lightbox[open] figure { transform: none; }
     }
 
     /* ---------- Responsive ---------- */
@@ -401,8 +534,9 @@
       .shortcuts-grid { grid-template-columns: 1fr 1fr; }
       .shortcut:nth-child(2) { border-right: 0; }
       .shortcut:nth-child(-n+2) { border-bottom: 1px solid var(--line-soft); }
-      .menu-row { grid-template-columns: 1fr 1fr; gap: 16px 40px; }
-      .menu-row h3 { grid-column: 1 / -1; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .wagyu { grid-template-columns: 1fr 1fr; gap: 20px; }
+      .wagyu-copy { grid-column: 1 / -1; grid-row: 2; padding: 8px 0 4px; }
       .steps { grid-template-columns: 1fr; gap: 36px; }
       .step, .step:first-child { border-left: 0; padding: 0; display: grid; grid-template-columns: 44px 1fr; column-gap: 20px; }
       .step::before { grid-row: span 2; margin: 0; }
@@ -438,12 +572,24 @@
       .shortcut { border-right: 0 !important; border-bottom: 1px solid var(--line-soft); padding: 18px 20px; }
       .shortcut:last-child { border-bottom: 0; }
       .pillars { grid-template-columns: 1fr; gap: 20px; }
-      .photo-cuts { aspect-ratio: 4 / 3; }
-      .photo-cuts { margin-bottom: 40px; }
-      .menu-row { grid-template-columns: 1fr; gap: 12px; padding: 28px 0; }
-      .menu-row h3 { font-size: 26px; }
-      .cuts { margin-top: 6px; font-size: 19px; }
-      .products-cta { flex-direction: column; align-items: stretch; text-align: center; }
+      .wagyu { gap: 12px; padding: 12px; margin-bottom: 56px; }
+      .wagyu-copy .btn { width: 100%; }
+      .brands { margin-bottom: 40px; }
+      .filters { flex-wrap: nowrap; overflow-x: auto; margin: 0 -20px 24px; padding: 0 20px 4px; scrollbar-width: none; scroll-snap-type: x proximity; }
+      .filters::-webkit-scrollbar { display: none; }
+      .filter { flex: none; scroll-snap-align: start; }
+      /* No celular o card vira uma linha: foto à esquerda, texto à direita, todos com a mesma altura */
+      .grid { grid-template-columns: 1fr; gap: 14px; }
+      .card { flex-direction: row; height: 190px; }
+      .card-media { width: 40%; flex: none; aspect-ratio: auto; }
+      .card-body { min-width: 0; gap: 4px; padding: 14px 16px; }
+      .tags .tag:nth-child(n+2) { display: none; }
+      .tag { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+      .card h3 { font-size: 20px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      .card-brand { font-size: 13px; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .card-wa { font-size: 13px; gap: 6px; padding: 0 10px; }
+      .cuts-cta { flex-direction: column; align-items: stretch; text-align: center; padding: 36px 22px; margin-top: 56px; }
+      .cuts-cta::before { background: rgba(15,12,11,.82); }
       .info { padding: 30px 22px; }
       .info .btns .btn { flex: 1 1 100%; }
       .map, .map iframe { min-height: 320px; }
@@ -581,32 +727,232 @@
   <section class="products" id="cortes">
     <div class="wrap">
       <div class="section-head reveal">
-        <h2>Feito para a brasa, pensado para você.</h2>
-        <p>Uma seleção para todos os estilos de churrasco e cozinha. A disponibilidade muda ao longo da semana.</p>
+        <h2>Nossos cortes</h2>
+        <p>Peças dos fornecedores com que a Santino trabalha. A disponibilidade muda ao longo da semana: encomende pelo WhatsApp.</p>
       </div>
-      <figure class="photo photo-cuts reveal">
-        <img src="fotos/santino-cortes.webp" alt="Peças de carne embaladas a vácuo apresentadas sobre a mesa de tronco da boutique" width="1536" height="1280" loading="lazy" onerror="this.hidden=true">
-      </figure>
-      <div class="menu">
-        <article class="menu-row reveal">
-          <h3>Cortes Prime</h3>
-          <p>As estrelas da churrasqueira, com marmoreio e maciez para impressionar.</p>
-          <ul class="cuts"><li>Picanha</li><li>Ancho</li><li>Chorizo</li><li>Prime Rib</li></ul>
-        </article>
-        <article class="menu-row reveal">
-          <h3>Cortes Especiais</h3>
-          <p>Peças alternativas e cheias de sabor para quem gosta de variar no fogo.</p>
-          <ul class="cuts"><li>Fraldinha</li><li>Maminha</li><li>Costela</li><li>Short Rib</li></ul>
-        </article>
-        <article class="menu-row reveal">
-          <h3>Complementos</h3>
-          <p>Tudo o que falta para fechar o churrasco completo, sem complicação.</p>
-          <ul class="cuts"><li>Linguiças</li><li>Carvão</li><li>Temperos</li><li>Acompanhamentos</li></ul>
-        </article>
+
+      <!-- Destaque: linha Wagyu Guidara -->
+      <article class="wagyu reveal" aria-labelledby="wagyuTitle">
+        <button class="wagyu-photo zoomable" type="button" data-full="fotos/produtos/chorizo-nippo-wagyu-guidara-960.webp" data-caption="Chorizo Nippo Wagyu, Guidara Meat &amp; Co" aria-label="Ampliar foto: Chorizo Nippo Wagyu">
+          <img src="fotos/produtos/chorizo-nippo-wagyu-guidara-480.webp" srcset="fotos/produtos/chorizo-nippo-wagyu-guidara-480.webp 480w, fotos/produtos/chorizo-nippo-wagyu-guidara-960.webp 960w" sizes="(max-width: 760px) 50vw, 380px" width="480" height="640" loading="lazy" decoding="async" alt="Chorizo Nippo Wagyu da Guidara na embalagem, com o marmoreio da carne aparente">
+        </button>
+        <div class="wagyu-copy">
+          <h3 id="wagyuTitle">Linha Wagyu Guidara</h3>
+          <p>Dois cortes de wagyu certificado da Guidara Meat &amp; Co.</p>
+          <dl class="wagyu-list">
+            <div><dt>Chorizo Nippo Wagyu</dt><dd>Wagyu cruzado certificado</dd></div>
+            <div><dt>Picanha Wagyu Kobeef</dt><dd>Wagyu puro certificado</dd></div>
+          </dl>
+          <a class="btn btn-gold" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20na%20linha%20Wagyu%20Guidara" target="_blank" rel="noopener">
+            <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+          </a>
+        </div>
+        <button class="wagyu-photo alt zoomable" type="button" data-full="fotos/produtos/picanhas-guidara-e-vpj-1200.webp" data-caption="Picanha Wagyu Kobeef (Guidara), ao lado da Picanha Black Angus (VPJ)" aria-label="Ampliar foto: Picanha Wagyu Kobeef">
+          <img src="fotos/produtos/picanha-wagyu-kobeef-guidara-280.webp" srcset="fotos/produtos/picanha-wagyu-kobeef-guidara-280.webp 280w, fotos/produtos/picanha-wagyu-kobeef-guidara-560.webp 560w" sizes="(max-width: 760px) 50vw, 380px" width="280" height="350" loading="lazy" decoding="async" alt="Picanha Wagyu Kobeef da Guidara embalada a vácuo">
+        </button>
+      </article>
+
+      <!-- Marcas: faixa contínua só com texto -->
+      <div class="brands reveal" id="brands">
+        <p class="sr-only">Marcas que a Santino trabalha: Guidara, Cabaña Las Lilas, Estância 92, VPJ, Angus Las Piedras, Estrela, Argus.</p>
+        <div class="brands-viewport" aria-hidden="true">
+          <div class="brands-track"><div class="brands-group"><span>Guidara</span><span>Cabaña Las Lilas</span><span>Estância 92</span><span>VPJ</span><span>Angus Las Piedras</span><span>Estrela</span><span>Argus</span></div><div class="brands-group"><span>Guidara</span><span>Cabaña Las Lilas</span><span>Estância 92</span><span>VPJ</span><span>Angus Las Piedras</span><span>Estrela</span><span>Argus</span></div></div>
+        </div>
+        <button class="brands-pause" type="button" id="brandsPause" aria-pressed="false" aria-label="Pausar faixa de marcas">
+          <svg class="i-pause" viewBox="0 0 14 14" aria-hidden="true"><rect x="3" y="2" width="2.5" height="10" rx="1" fill="currentColor"/><rect x="8.5" y="2" width="2.5" height="10" rx="1" fill="currentColor"/></svg>
+          <svg class="i-play" viewBox="0 0 14 14" aria-hidden="true"><path d="M4 2.2v9.6a.6.6 0 0 0 .9.5l7.4-4.8a.6.6 0 0 0 0-1L4.9 1.7a.6.6 0 0 0-.9.5Z" fill="currentColor"/></svg>
+        </button>
       </div>
-      <div class="products-cta reveal">
-        <p>Procurando um corte específico? Pergunte o que chegou hoje.</p>
-        <a class="btn btn-ghost" href="https://wa.me/5543991948826?text=Ol%C3%A1%2C%20Santino!%20Quais%20cortes%20voc%C3%AAs%20t%C3%AAm%20dispon%C3%ADveis%20hoje%3F" target="_blank" rel="noopener">
+
+      <div class="filters" role="group" aria-label="Filtrar cortes por linha">
+        <button class="filter" type="button" data-filter="todos" aria-pressed="true">Todos <span class="count">13</span></button>
+        <button class="filter" type="button" data-filter="wagyu" aria-pressed="false">Wagyu <span class="count">2</span></button>
+        <button class="filter" type="button" data-filter="angus" aria-pressed="false">Angus <span class="count">2</span></button>
+        <button class="filter" type="button" data-filter="grassfed" aria-pressed="false">Grass Fed <span class="count">2</span></button>
+        <button class="filter" type="button" data-filter="dia" aria-pressed="false">Linha do dia a dia <span class="count">5</span></button>
+        <button class="filter" type="button" data-filter="burger" aria-pressed="false">Hambúrguer e bacon <span class="count">2</span></button>
+      </div>
+      <p class="sr-only" id="filterStatus" aria-live="polite"></p>
+
+      <ul class="grid" id="productGrid">
+        <li class="card reveal" data-cat="wagyu">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/chorizo-nippo-wagyu-guidara-960.webp" data-caption="Chorizo Nippo Wagyu, Guidara Meat &amp; Co" aria-label="Ampliar foto: Chorizo Nippo Wagyu">
+            <img src="fotos/produtos/chorizo-nippo-wagyu-guidara-480.webp" srcset="fotos/produtos/chorizo-nippo-wagyu-guidara-480.webp 480w, fotos/produtos/chorizo-nippo-wagyu-guidara-960.webp 960w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="480" height="640" loading="lazy" decoding="async" style="object-position: 50% 62%" alt="Chorizo Nippo Wagyu da Guidara na embalagem, com o marmoreio da carne aparente">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Wagyu cruzado certificado</li></ul>
+            <h3>Chorizo Nippo Wagyu</h3>
+            <p class="card-brand">Guidara Meat &amp; Co</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20no%20Chorizo%20Nippo%20Wagyu" target="_blank" rel="noopener" aria-label="Encomendar Chorizo Nippo Wagyu (Guidara Meat & Co) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+        <li class="card reveal" data-cat="wagyu">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/picanhas-guidara-e-vpj-1200.webp" data-caption="Picanha Wagyu Kobeef (Guidara), ao lado da Picanha Black Angus (VPJ)" aria-label="Ampliar foto: Picanha Wagyu Kobeef">
+            <img src="fotos/produtos/picanha-wagyu-kobeef-guidara-280.webp" srcset="fotos/produtos/picanha-wagyu-kobeef-guidara-280.webp 280w, fotos/produtos/picanha-wagyu-kobeef-guidara-560.webp 560w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="280" height="350" loading="lazy" decoding="async" style="object-position: 50% 50%" alt="Picanha Wagyu Kobeef da Guidara embalada a vácuo">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Wagyu puro certificado</li></ul>
+            <h3>Picanha Wagyu Kobeef</h3>
+            <p class="card-brand">Guidara Meat &amp; Co</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20na%20Picanha%20Wagyu%20Kobeef" target="_blank" rel="noopener" aria-label="Encomendar Picanha Wagyu Kobeef (Guidara Meat & Co) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+        <li class="card reveal" data-cat="angus">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/picanhas-guidara-e-vpj-1200.webp" data-caption="Picanha Black Angus (VPJ), ao lado da Picanha Wagyu Kobeef (Guidara)" aria-label="Ampliar foto: Picanha Black Angus">
+            <img src="fotos/produtos/picanha-black-angus-vpj-300.webp" srcset="fotos/produtos/picanha-black-angus-vpj-300.webp 300w, fotos/produtos/picanha-black-angus-vpj-600.webp 600w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="300" height="376" loading="lazy" decoding="async" style="object-position: 50% 45%" alt="Picanha Black Angus da VPJ na embalagem preta com detalhes dourados">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Black Angus</li></ul>
+            <h3>Picanha Black Angus</h3>
+            <p class="card-brand">VPJ</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20na%20Picanha%20Black%20Angus" target="_blank" rel="noopener" aria-label="Encomendar Picanha Black Angus (VPJ) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+        <li class="card reveal" data-cat="angus">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/assado-de-tira-angus-las-piedras-960.webp" data-caption="Assado de tira, Angus Las Piedras, Uruguai" aria-label="Ampliar foto: Assado de tira">
+            <img src="fotos/produtos/assado-de-tira-angus-las-piedras-480.webp" srcset="fotos/produtos/assado-de-tira-angus-las-piedras-480.webp 480w, fotos/produtos/assado-de-tira-angus-las-piedras-960.webp 960w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="480" height="640" loading="lazy" decoding="async" style="object-position: 50% 55%" alt="Assado de tira Angus Las Piedras embalado a vácuo, com as tiras de costela e o osso aparente">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Black Angus certificado</li></ul>
+            <h3>Assado de tira</h3>
+            <p class="card-brand">Angus Las Piedras, Uruguai</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20no%20Assado%20de%20tira" target="_blank" rel="noopener" aria-label="Encomendar Assado de tira (Angus Las Piedras, Uruguai) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+        <li class="card reveal" data-cat="grassfed">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/picanha-maturada-cabana-las-lilas-960.webp" data-caption="Picanha Grass Fed maturada, Cabaña Las Lilas" aria-label="Ampliar foto: Picanha Grass Fed maturada">
+            <img src="fotos/produtos/picanha-maturada-cabana-las-lilas-480.webp" srcset="fotos/produtos/picanha-maturada-cabana-las-lilas-480.webp 480w, fotos/produtos/picanha-maturada-cabana-las-lilas-960.webp 960w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="480" height="640" loading="lazy" decoding="async" style="object-position: 50% 55%" alt="Picanha maturada Grass Fed da Cabaña Las Lilas embalada a vácuo, com o selo do campo no rótulo">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Maturada</li><li class="tag">Criado a pasto</li></ul>
+            <h3>Picanha Grass Fed maturada</h3>
+            <p class="card-brand">Cabaña Las Lilas</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20na%20Picanha%20Grass%20Fed%20maturada" target="_blank" rel="noopener" aria-label="Encomendar Picanha Grass Fed maturada (Cabaña Las Lilas) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+        <li class="card reveal" data-cat="grassfed">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/fralda-maturada-cabana-las-lilas-960.webp" data-caption="Fralda Grass Fed maturada, Cabaña Las Lilas" aria-label="Ampliar foto: Fralda Grass Fed maturada">
+            <img src="fotos/produtos/fralda-maturada-cabana-las-lilas-480.webp" srcset="fotos/produtos/fralda-maturada-cabana-las-lilas-480.webp 480w, fotos/produtos/fralda-maturada-cabana-las-lilas-960.webp 960w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="480" height="640" loading="lazy" decoding="async" style="object-position: 50% 60%" alt="Duas peças de fralda (vazio) maturada Grass Fed da Cabaña Las Lilas embaladas a vácuo">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Maturada</li><li class="tag">Criado a pasto</li></ul>
+            <h3>Fralda Grass Fed maturada</h3>
+            <p class="card-brand">Cabaña Las Lilas</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20na%20Fralda%20Grass%20Fed%20maturada" target="_blank" rel="noopener" aria-label="Encomendar Fralda Grass Fed maturada (Cabaña Las Lilas) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+        <li class="card reveal" data-cat="dia">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/picanha-argus-960.webp" data-caption="Picanha, Frigorífico Argus" aria-label="Ampliar foto: Picanha">
+            <img src="fotos/produtos/picanha-argus-480.webp" srcset="fotos/produtos/picanha-argus-480.webp 480w, fotos/produtos/picanha-argus-960.webp 960w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="480" height="640" loading="lazy" decoding="async" style="object-position: 50% 55%" alt="Picanha do Frigorífico Argus embalada a vácuo, com a capa de gordura aparente">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Cortes tradicionais</li></ul>
+            <h3>Picanha</h3>
+            <p class="card-brand">Frigorífico Argus</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20na%20Picanha%20Argus" target="_blank" rel="noopener" aria-label="Encomendar Picanha (Frigorífico Argus) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+        <li class="card reveal" data-cat="dia">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/entrecote-estancia-92-960.webp" data-caption="Entrecote (pedaço), Estância 92" aria-label="Ampliar foto: Entrecote (pedaço)">
+            <img src="fotos/produtos/entrecote-estancia-92-480.webp" srcset="fotos/produtos/entrecote-estancia-92-480.webp 480w, fotos/produtos/entrecote-estancia-92-960.webp 960w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="480" height="640" loading="lazy" decoding="async" style="object-position: 50% 45%" alt="Entrecote em pedaço da Estância 92 embalado a vácuo sobre a mesa de tronco da loja">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Minerva Foods</li></ul>
+            <h3>Entrecote (pedaço)</h3>
+            <p class="card-brand">Estância 92</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20no%20Entrecote%20Est%C3%A2ncia%2092" target="_blank" rel="noopener" aria-label="Encomendar Entrecote (pedaço) (Estância 92) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+        <li class="card reveal" data-cat="dia">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/picanha-estancia-92-960.webp" data-caption="Picanha, Estância 92" aria-label="Ampliar foto: Picanha">
+            <img src="fotos/produtos/picanha-estancia-92-480.webp" srcset="fotos/produtos/picanha-estancia-92-480.webp 480w, fotos/produtos/picanha-estancia-92-960.webp 960w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="480" height="640" loading="lazy" decoding="async" style="object-position: 50% 55%" alt="Picanha da Estância 92 embalada a vácuo, ao lado de outro corte da mesma marca">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Minerva Foods</li></ul>
+            <h3>Picanha</h3>
+            <p class="card-brand">Estância 92</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20na%20Picanha%20Est%C3%A2ncia%2092" target="_blank" rel="noopener" aria-label="Encomendar Picanha (Estância 92) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+        <li class="card reveal" data-cat="dia">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/ancho-novilha-jovem-estrela-960.webp" data-caption="Ancho Novilha Jovem, Estrela Alimentos" aria-label="Ampliar foto: Ancho Novilha Jovem">
+            <img src="fotos/produtos/ancho-novilha-jovem-estrela-480.webp" srcset="fotos/produtos/ancho-novilha-jovem-estrela-480.webp 480w, fotos/produtos/ancho-novilha-jovem-estrela-960.webp 960w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="480" height="640" loading="lazy" decoding="async" style="object-position: 50% 50%" alt="Ancho Novilha Jovem da Estrela Alimentos embalado a vácuo, com rótulo preto e dourado">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Novilha Jovem</li></ul>
+            <h3>Ancho Novilha Jovem</h3>
+            <p class="card-brand">Estrela Alimentos</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20no%20Ancho%20Novilha%20Jovem" target="_blank" rel="noopener" aria-label="Encomendar Ancho Novilha Jovem (Estrela Alimentos) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+        <li class="card reveal" data-cat="dia">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/contra-file-e-file-de-costela-frigo-estrela-960.webp" data-caption="Contra-filé e Filé de costela, Frigo Estrela" aria-label="Ampliar foto: Contra-filé e Filé de costela">
+            <img src="fotos/produtos/contra-file-e-file-de-costela-frigo-estrela-480.webp" srcset="fotos/produtos/contra-file-e-file-de-costela-frigo-estrela-480.webp 480w, fotos/produtos/contra-file-e-file-de-costela-frigo-estrela-960.webp 960w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="480" height="640" loading="lazy" decoding="async" style="object-position: 50% 55%" alt="Contra-filé e filé de costela do Frigo Estrela, embalados a vácuo, com o campo ao fundo">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Linha Dia a Dia</li></ul>
+            <h3>Contra-filé e Filé de costela</h3>
+            <p class="card-brand">Frigo Estrela</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20no%20Contra-fil%C3%A9%20e%20no%20Fil%C3%A9%20de%20costela" target="_blank" rel="noopener" aria-label="Encomendar Contra-filé e Filé de costela (Frigo Estrela) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+        <li class="card reveal" data-cat="burger">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/hamburguer-e-bacon-vpj-1200.webp" data-caption="Hambúrguer Angus e Bacon fatiado Duroc, da VPJ" aria-label="Ampliar foto: Hambúrguer Angus">
+            <img src="fotos/produtos/hamburguer-angus-vpj-330.webp" srcset="fotos/produtos/hamburguer-angus-vpj-330.webp 330w, fotos/produtos/hamburguer-angus-vpj-660.webp 660w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="330" height="412" loading="lazy" decoding="async" style="object-position: 50% 50%" alt="Pacotes de hambúrguer Angus certificado da VPJ">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Carne Angus certificada</li></ul>
+            <h3>Hambúrguer Angus</h3>
+            <p class="card-brand">VPJ</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20no%20Hamb%C3%BArguer%20Angus" target="_blank" rel="noopener" aria-label="Encomendar Hambúrguer Angus (VPJ) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+        <li class="card reveal" data-cat="burger">
+          <button class="card-media zoomable" type="button" data-full="fotos/produtos/hamburguer-e-bacon-vpj-1200.webp" data-caption="Bacon fatiado Duroc e Hambúrguer Angus, da VPJ" aria-label="Ampliar foto: Bacon fatiado Duroc">
+            <img src="fotos/produtos/bacon-duroc-vpj-340.webp" srcset="fotos/produtos/bacon-duroc-vpj-340.webp 340w, fotos/produtos/bacon-duroc-vpj-680.webp 680w" sizes="(max-width: 760px) 40vw, (max-width: 980px) 50vw, 360px" width="340" height="426" loading="lazy" decoding="async" style="object-position: 50% 50%" alt="Caixa de bacon de paleta fatiado Duroc Pork da VPJ">
+          </button>
+          <div class="card-body">
+            <ul class="tags"><li class="tag">Bacon de paleta</li></ul>
+            <h3>Bacon fatiado Duroc</h3>
+            <p class="card-brand">VPJ</p>
+            <a class="card-wa" href="https://wa.me/5543991948826?text=Ol%C3%A1%21%20Tenho%20interesse%20no%20Bacon%20fatiado%20Duroc" target="_blank" rel="noopener" aria-label="Encomendar Bacon fatiado Duroc (VPJ) pelo WhatsApp">
+              <svg aria-hidden="true"><use href="#i-wa"/></svg> Encomendar pelo WhatsApp
+            </a>
+          </div>
+        </li>
+      </ul>
+
+      <div class="cuts-cta reveal">
+        <img src="fotos/santino-cortes.webp" alt="" width="1536" height="1280" loading="lazy" decoding="async">
+        <div class="cuts-cta-copy">
+          <p class="cuts-cta-title">Procurando um corte específico?</p>
+          <p>Pergunte o que chegou hoje.</p>
+        </div>
+        <a class="btn btn-gold" href="https://wa.me/5543991948826?text=Ol%C3%A1%2C%20Santino!%20Quais%20cortes%20voc%C3%AAs%20t%C3%AAm%20dispon%C3%ADveis%20hoje%3F" target="_blank" rel="noopener">
           <svg aria-hidden="true"><use href="#i-wa"/></svg> Consultar disponibilidade
         </a>
       </div>
@@ -726,6 +1072,16 @@
     </div>
   </footer>
 
+  <dialog class="lightbox" id="lightbox" aria-label="Foto ampliada">
+    <figure>
+      <img id="lbImg" src="fotos/produtos/chorizo-nippo-wagyu-guidara-480.webp" alt="" loading="lazy" decoding="async">
+      <figcaption id="lbCap"></figcaption>
+    </figure>
+    <button class="lb-close" type="button" id="lbClose" aria-label="Fechar foto">
+      <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 3l12 12M15 3 3 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </dialog>
+
   <a class="fab" id="fab" href="https://wa.me/5543991948826?text=Ol%C3%A1%2C%20Santino!%20Gostaria%20de%20fazer%20um%20pedido." target="_blank" rel="noopener" aria-label="Fazer pedido pelo WhatsApp" tabindex="-1">
     <svg aria-hidden="true"><use href="#i-wa"/></svg>
   </a>
@@ -776,6 +1132,95 @@
       document.addEventListener('visibilitychange', sync);
       if (hasIO) new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; sync(); }).observe(document.getElementById('hero'));
       sync();
+    })();
+
+    // ---------- Nossos cortes ----------
+    (function () {
+      const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const EASE_OUT = 'cubic-bezier(0.23, 1, 0.32, 1)';
+      const EASE_IN_OUT = 'cubic-bezier(0.77, 0, 0.175, 1)';
+
+      // Filtros: quem sai some rápido; quem fica desliza até a nova posição (FLIP);
+      // quem entra aparece em cascata. Um clique novo no meio da animação recomeça do estado atual.
+      const grid = document.getElementById('productGrid');
+      const cards = [...grid.children];
+      const buttons = [...document.querySelectorAll('.filter')];
+      const status = document.getElementById('filterStatus');
+      let run = 0;
+
+      const stopAll = () => cards.forEach(c => c.getAnimations().forEach(a => { if (!(a instanceof CSSTransition)) a.cancel(); }));
+
+      function applyFilter(f) {
+        const id = ++run;
+        const match = c => f === 'todos' || c.dataset.cat === f;
+        stopAll();
+        const leaving = cards.filter(c => !c.hidden && !match(c));
+        const entering = cards.filter(c => c.hidden && match(c));
+        const label = buttons.find(b => b.dataset.filter === f).firstChild.textContent.trim();
+        const total = cards.filter(match).length;
+        status.textContent = `Mostrando ${total} ${total === 1 ? 'corte' : 'cortes'}: ${label}`;
+
+        if (reduceMotion()) {
+          cards.forEach(c => { c.hidden = !match(c); c.classList.remove('reveal', 'in'); });
+          return;
+        }
+        const first = new Map(cards.filter(c => !c.hidden).map(c => [c, c.getBoundingClientRect()]));
+        const fades = leaving.map(c => c.animate(
+          [{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(0.96)' }],
+          { duration: 150, easing: 'ease-out', fill: 'forwards' }).finished.catch(() => {}));
+
+        Promise.all(fades).then(() => {
+          if (id !== run) return;
+          leaving.forEach(c => { c.hidden = true; c.getAnimations().forEach(a => a.cancel()); });
+          entering.forEach(c => { c.hidden = false; c.classList.remove('reveal', 'in'); });
+          let n = 0;
+          cards.filter(c => !c.hidden).forEach(c => {
+            if (entering.includes(c)) {
+              c.animate([{ opacity: 0, transform: 'translateY(12px) scale(0.98)' }, { opacity: 1, transform: 'none' }],
+                { duration: 280, delay: Math.min(n++, 6) * 50, easing: EASE_OUT, fill: 'backwards' });
+              return;
+            }
+            const a = first.get(c), b = c.getBoundingClientRect();
+            const dx = a.left - b.left, dy = a.top - b.top;
+            if (dx || dy) c.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }],
+              { duration: 420, easing: EASE_IN_OUT });
+          });
+        });
+      }
+
+      buttons.forEach(b => b.addEventListener('click', () => {
+        if (b.getAttribute('aria-pressed') === 'true') return;
+        buttons.forEach(x => x.setAttribute('aria-pressed', x === b));
+        applyFilter(b.dataset.filter);
+      }));
+
+      // Faixa de marcas: botão de pausa (além da pausa no hover)
+      const brands = document.getElementById('brands');
+      const brandsPause = document.getElementById('brandsPause');
+      brandsPause.addEventListener('click', () => {
+        const paused = brands.classList.toggle('paused');
+        brandsPause.setAttribute('aria-pressed', paused);
+        brandsPause.setAttribute('aria-label', paused ? 'Retomar faixa de marcas' : 'Pausar faixa de marcas');
+      });
+
+      // Lightbox: abre na hora com a foto que já está no card e troca pela grande quando ela carrega
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lbImg');
+      const lbCap = document.getElementById('lbCap');
+      document.addEventListener('click', e => {
+        const z = e.target.closest('.zoomable');
+        if (!z) return;
+        const thumb = z.querySelector('img');
+        lbImg.src = thumb.currentSrc || thumb.src;
+        lbImg.alt = thumb.alt;
+        lbCap.textContent = z.dataset.caption;
+        const full = new Image();
+        full.onload = () => { if (lb.open) lbImg.src = full.src; };
+        full.src = z.dataset.full;
+        lb.showModal();
+      });
+      document.getElementById('lbClose').addEventListener('click', () => lb.close());
+      lb.addEventListener('click', e => { if (e.target === lb || e.target.tagName === 'FIGURE') lb.close(); });
     })();
 
     // Menu mobile: abre no botão, fecha no Esc, ao tocar fora ou ao escolher um link
