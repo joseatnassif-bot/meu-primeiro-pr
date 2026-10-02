@@ -9,7 +9,13 @@ Fotos reais da Santino Prime Meats usadas no `index.html`. Se um arquivo sumir, 
 | `santino-area-externa-vertical.webp`  | Topo, banner 2 no celular (mesma cena, vertical)          |
 | `santino-fachada.webp`                | Seção "Mais que um açougue": foto principal (a loja)      |
 | `santino-area-externa-coqueiros.webp` | Seção "Mais que um açougue": foto menor (a experiência)   |
-| `santino-cortes.webp`                 | Seção "Feito para a brasa", acima da lista de cortes      |
+| `santino-cortes.webp`                 | Fundo da chamada "Procurando um corte específico?"        |
+
+## Produtos (`produtos/`)
+
+Fotos dos produtos tiradas pela loja, usadas na seção "Nossos cortes". Cada foto existe em 2 tamanhos (o número no fim do nome é a largura em pixels): o navegador escolhe o menor que fica nítido na tela (`srcset`). As fotos com dois produtos (picanhas Guidara e VPJ; hambúrguer e bacon VPJ) foram recortadas para cada produto ter seu card; a versão `-1200` inteira é a que abre ampliada.
+
+Os dados de cada card (nome, marca, etiqueta, categoria do filtro e mensagem do WhatsApp) ficam no `index.html`, dentro de `<ul class="grid" id="productGrid">`. Para um produto novo, copie um `<li class="card">`, troque os textos e as fotos e ajuste `data-cat` (`wagyu`, `angus`, `grassfed`, `dia` ou `burger`) e o número do filtro correspondente.
 
 Para trocar uma foto, substitua o arquivo mantendo o nome. Se o formato mudar muito (por exemplo, uma vertical no lugar de uma horizontal), ajuste também os atributos `width`/`height` e o texto `alt` no `index.html`.
 
