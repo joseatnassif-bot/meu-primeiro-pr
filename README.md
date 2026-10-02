@@ -15,4 +15,4 @@ Este repositório foi criado para você praticar como abrir, revisar e mergear u
 
 ## Projetos
 
-- [`santino-prime-meats/`](santino-prime-meats/index.html) — site da boutique de carnes Santino Prime Meats (Londrina, PR). Página única em HTML/CSS/JS puro: abra o `index.html` no navegador ou publique a pasta no GitHub Pages. As fotos reais entram em [`santino-prime-meats/fotos/`](santino-prime-meats/fotos/README.md). Publicado no GitHub Pages em https://joseatnassif-bot.github.io/meu-primeiro-pr/ (o workflow `.github/workflows/pages.yml` atualiza o site a cada merge na `main`).
+- [`santino-prime-meats/`](santino-prime-meats/index.html) — site da boutique de carnes Santino Prime Meats (Londrina, PR). Página única em HTML/CSS/JS puro: abra o `index.html` no navegador ou publique a pasta no GitHub Pages. As fotos reais entram em [`santino-prime-meats/fotos/`](santino-prime-meats/fotos/README.md). Publicado no GitHub Pages (branch `main`, pasta raiz) em https://joseatnassif-bot.github.io/meu-primeiro-pr/: o `index.html` da raiz redireciona para `santino-prime-meats/` e o site se atualiza sozinho a cada merge na `main`.
